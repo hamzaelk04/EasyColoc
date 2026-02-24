@@ -9,18 +9,7 @@
 
 <body>
     <!-- Navigation -->
-    <header>
-        <nav class="navbar">
-            <div class="logo">ColocApp</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="login.html">Connexion</a></li>
-                <li><a href="register.html">Inscription</a></li>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-            </ul>
-            <div class="menu-toggle" id="menuToggle">&#9776;</div>
-        </nav>
-    </header>
+    @include('includes.header')
 
     <!-- Hero Section -->
     <section class="hero">

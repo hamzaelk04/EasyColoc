@@ -7,17 +7,7 @@
 </head>
 <body>
   <!-- Navigation -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">ColocApp</div>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="login.html">Connexion</a></li>
-        <li><a href="register.html" class="active">Inscription</a></li>
-      </ul>
-      <div class="menu-toggle" id="menuToggle">&#9776;</div>
-    </nav>
-  </header>
+  @include('includes.header')
 
   <!-- Register Form -->
   <section class="form-section">
