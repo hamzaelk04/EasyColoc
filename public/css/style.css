@@ -204,3 +204,13 @@ footer {
 .form-container button:hover {
   background: #0056b3;
 }
+
+.form-container h1 {
+  margin-bottom: 15px;
+  color: #007BFF;
+}
+
+.form-container p {
+  margin-bottom: 20px;
+  color: #555;
+}
