@@ -38,6 +38,6 @@
   <!-- Footer -->
   @include('includes.footer')
 
-  <script src="script.js"></script>
+  <script src="{{ asset('js/register.js') }}"></script>
 </body>
 </html>
