@@ -31,7 +31,7 @@
         <input type="password" placeholder="Mot de passe" required>
         <button type="submit" class="btn">S'inscrire</button>
       </form>
-      <p>Déjà inscrit ? <a href="login.html">Se connecter</a></p>
+      <p>Déjà inscrit ? <a href="login">Se connecter</a></p>
     </div>
   </section>
 
