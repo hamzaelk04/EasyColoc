@@ -16,7 +16,7 @@
         <div class="hero-content">
             <h1>Gérez vos dépenses de colocation facilement</h1>
             <p>Invitez vos colocataires, suivez vos dépenses et simplifiez vos remboursements.</p>
-            <a href="register.html" class="btn">Commencer maintenant</a>
+            <a href="register" class="btn">Commencer maintenant</a>
         </div>
     </section>
 
