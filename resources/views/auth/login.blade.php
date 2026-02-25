@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ColocApp - Accueil</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation -->
+    @include('includes.header')
+
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -45,3 +58,5 @@
         </div>
     </form>
 </x-guest-layout>
+
+@include('includes.footer')

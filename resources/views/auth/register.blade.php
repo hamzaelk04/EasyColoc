@@ -1,11 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ColocApp - Accueil</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation -->
+    @include('includes.header')
+
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- first name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <x-input-label for="firstname" :value="__('First name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="firstname" :value="old('name')" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- last name -->
+        <div>
+            <x-input-label for="lastname" :value="__('Last name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="lastname" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
