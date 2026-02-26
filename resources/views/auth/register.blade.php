@@ -70,3 +70,5 @@
         </div>
     </form>
 </x-guest-layout>
+
+@include('includes.footer')
