@@ -9,11 +9,7 @@ Route::get('/', function () {
 
 Route::get('/user', function () {
     return view('user');
-});
-
-// Route::get('/register', function () {
-//     return view('register');
-// });
+})->middleware(['auth', 'verified'])->name('user');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

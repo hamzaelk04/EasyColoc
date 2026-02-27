@@ -28,7 +28,7 @@ class ColocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
