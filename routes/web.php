@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +11,12 @@ Route::get('/', function () {
 Route::get('/user', function () {
     return view('user');
 })->middleware(['auth', 'verified'])->name('user');
+
+Route::post('/user', [ColocationController::class, 'store']);
+
+Route::get('/colocation', function() {
+    return view('colocation');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

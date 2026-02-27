@@ -28,7 +28,8 @@ class ColocationController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $name = $request->name;
+        return redirect('colocation');
     }
 
     /**
