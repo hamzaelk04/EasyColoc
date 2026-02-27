@@ -29,7 +29,12 @@ class ColocationController extends Controller
     public function store(Request $request)
     {
         $name = $request->name;
-        return redirect('colocation');
+        Colocation::create([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return view('colocation', compact('name'));
     }
 
     /**
