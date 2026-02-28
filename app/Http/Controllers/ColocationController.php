@@ -29,10 +29,16 @@ class ColocationController extends Controller
     public function store(Request $request)
     {
         $name = $request->name;
-        Colocation::create([
+        $colocation = Colocation::create([
             'name' => $request->name,
             'description' => $request->description
         ]);
+
+        $user = auth()->user();
+        $user->colocations()->attach(
+            $colocation->id,
+            ['role' => 'owner']
+        );
 
         return view('colocation', compact('name'));
     }
