@@ -49,6 +49,8 @@ class User extends Authenticatable
 
     public function colocations()
     {
-        return $this->belongsToMany(Colocation::class)->withTimestamps();
+        return $this->belongsToMany(Colocation::class)
+        ->withPivot('role')
+        ->withTimestamps();
     }
 }

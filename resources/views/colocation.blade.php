@@ -33,7 +33,7 @@
         <main class="flex-1 p-6">
             <!-- Top bar -->
             <div class="flex justify-between items-center mb-6">
-                <div class="bg-green-100 text-green-700 px-4 py-2 rounded">'{{ $name }}' créée.</div>
+                <div class="bg-green-100 text-green-700 px-4 py-2 rounded">'{{ $colocation->name }}' créée.</div>
                 <div class="text-sm font-semibold text-gray-700"> Hello {{ auth()->user()->firstname }}</div>
             </div>
 

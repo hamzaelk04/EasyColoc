@@ -28,6 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+
+        $colocation = $user->colocations()->first();
+
+        if($colocation) return redirect()->route('colocation.show', $colocation->id);
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
