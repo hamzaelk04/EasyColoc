@@ -58,7 +58,6 @@ class ColocationController extends Controller
 
         return view('colocation', [
             'colocation' => $colocation
-            // 'role' => $colocation->users()->where('user_id')
         ]);
     }
 
