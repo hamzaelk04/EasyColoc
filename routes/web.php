@@ -19,6 +19,7 @@ Route::post('/user', [ColocationController::class, 'store']);
 // });
 
 Route::get('/colocation/{colocation}', [ColocationController::class, 'show'])
+->middleware(['auth', 'verified'])
 ->name('colocation.show');
 
 Route::get('/dashboard', function () {
