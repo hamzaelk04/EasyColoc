@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Expense;
 
 class ExpenseController extends Controller
 {
@@ -27,7 +28,32 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0.01',
+        ]);
+
+        $user = auth()->user();
+        $colocation = $user->colocation()->first();
+
+        $expense = Expense::create([
+            'colocation_id' => $colocation->id,
+            'payer_id' => $user->id,
+            'title' => $request->title,
+            'amount' => $request->amount,
+        ]);
+
+        $users = $colocation->users;
+
+        $share = $request->amount / $users->count();
+
+        foreach ($users as $member) {
+            $expense->users()->attach($member->id, [
+                'amount' => $share
+            ]);
+        }
+
+        return back()->with('success', 'Expense added successfully.');
     }
 
     /**
