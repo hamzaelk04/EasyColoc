@@ -48,6 +48,14 @@ class ColocationController extends Controller
      */
     public function show(Colocation $colocation)
     {
+        $user = auth()->user();
+
+        $belongs = $colocation->users()->where('user_id', '=', $user->id)->exists();
+
+        if (!$belongs) {
+            abort(403);
+        }
+
         return view('colocation', [
             'colocation' => $colocation
             // 'role' => $colocation->users()->where('user_id')
