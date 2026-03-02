@@ -53,4 +53,16 @@ class User extends Authenticatable
         ->withPivot('role')
         ->withTimestamps();
     }
+
+    public function expensesPaid()
+    {
+        return $this->hasMany(Expense::class, 'payer_id');
+    }
+
+    public function expensesShared()
+    {
+        return $this->belongsToMany(Expense::class)
+        ->withPivot('amount')
+        ->withTimestamps();
+    }
 }
