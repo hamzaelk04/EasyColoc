@@ -15,9 +15,6 @@ Route::get('/user', function () {
 
 Route::post('/user', [ColocationController::class, 'store']);
 
-// Route::get('/colocation', function() {
-//     return view('colocation');
-// });
 
 Route::get('/colocation/{colocation}', [ColocationController::class, 'show'])
 ->middleware(['auth', 'verified'])

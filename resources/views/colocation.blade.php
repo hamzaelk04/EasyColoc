@@ -83,10 +83,6 @@
             <section class="bg-white shadow rounded p-4">
                 <h2 class="text-lg font-semibold mb-4">Membres de la coloc</h2>
                 <ul class="space-y-2">
-                    <li class="flex justify-between items-center border-b pb-2">
-                        <span>👑 admin <span class="text-xs text-gray-500">(OWNER)</span></span>
-                        <span class="text-sm text-gray-700">Balance: 0</span>
-                    </li>
                     @foreach ($users as $user)
                         <li class="flex justify-between items-center border-b pb-2">
                             <span> {{ $user->firstname }} <span class="text-xs text-gray-500">({{ $user->pivot->role }})</span></span>

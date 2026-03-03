@@ -40,7 +40,7 @@ class ColocationController extends Controller
             ['role' => 'owner']
         );
 
-        return view('colocation', compact('name'));
+        return redirect()->route('colocation.show', $colocation);
     }
 
     /**
