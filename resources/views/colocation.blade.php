@@ -45,16 +45,27 @@
                 <table class="w-full text-sm border">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="p-2 text-left">Titre / Catégorie</th>
-                            <th class="p-2 text-left">Payeur</th>
-                            <th class="p-2 text-left">Montant</th>
-                            <th class="p-2 text-left">Action</th>
+                            <th class="p-2 text-center">Titre / Catégorie</th>
+                            <th class="p-2 text-center">Payeur</th>
+                            <th class="p-2 text-center">Montant</th>
+                            <th class="p-2 text-center">date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td colspan="4" class="text-center text-gray-500 py-4">Aucune dépense pour le moment.</td>
-                        </tr>
+                        @if ($expenses->isEmpty())
+                            <tr>
+                                <td colspan="4" class="text-center text-gray-500 py-4">Aucune dépense pour le moment.</td>
+                            </tr>
+                        @else
+                            @foreach ($expenses as $expense)
+                                <tr>
+                                    <td class="text-center py-4">{{ $expense->title }}</td>
+                                    <td class="text-center py-4">{{ $expense->payer->firstname }}</td>
+                                    <td class="text-center py-4">{{ $expense->amount }}</td>
+                                    <td class="text-center py-4">{{ $expense->date }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
                 <button onclick="openModal()" class="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">+
@@ -76,6 +87,12 @@
                         <span>👑 admin <span class="text-xs text-gray-500">(OWNER)</span></span>
                         <span class="text-sm text-gray-700">Balance: 0</span>
                     </li>
+                    @foreach ($users as $user)
+                        <li class="flex justify-between items-center border-b pb-2">
+                            <span> {{ $user->firstname }} <span class="text-xs text-gray-500">({{ $user->pivot->role }})</span></span>
+                            <span class="text-sm text-gray-700">Balance: 0</span>
+                        </li>
+                    @endforeach
                 </ul>
                 <button class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600">Inviter un
                     membre</button>

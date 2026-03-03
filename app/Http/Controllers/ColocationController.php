@@ -56,8 +56,13 @@ class ColocationController extends Controller
             abort(403);
         }
 
+        $users = $colocation->users()->get();
+        $expenses = $user->expensesShared()->with('payer')->get();
+
         return view('colocation', [
-            'colocation' => $colocation
+            'colocation' => $colocation,
+            'expenses' => $expenses,
+            'users' => $users
         ]);
     }
 
