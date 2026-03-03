@@ -34,11 +34,12 @@ class ExpenseController extends Controller
         ]);
 
         $user = auth()->user();
-        $colocation = $user->colocation()->first();
+        $colocation = $user->colocations()->first();
 
         $expense = Expense::create([
             'colocation_id' => $colocation->id,
             'payer_id' => $user->id,
+            'date' => $request->date,
             'title' => $request->title,
             'amount' => $request->amount,
         ]);
@@ -49,7 +50,8 @@ class ExpenseController extends Controller
 
         foreach ($users as $member) {
             $expense->users()->attach($member->id, [
-                'amount' => $share
+                'amount' => $share,
+                'date' => $request->date
             ]);
         }
 

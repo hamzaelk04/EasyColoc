@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expense extends Model
 {
+    protected $fillable = [
+        'colocation_id',
+        'payer_id',
+        'date',
+        'title',
+        'amount',
+    ];
     public function users()
     {
         return $this->belongsToMany(User::class)

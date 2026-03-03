@@ -57,7 +57,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">+ Nouvelle
+                <button onclick="openModal()" class="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">+
+                    Nouvelle
                     dépense</button>
             </section>
 
@@ -83,6 +84,66 @@
     </div>
 
     @include('includes.footer')
+
+    <!-- Modal Overlay -->
+    <div id="expenseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <!-- Modal Content -->
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+                &times;
+            </button>
+
+            <h2 class="text-lg font-semibold mb-4">Nouvelle dépense</h2>
+
+            <form method="POST" action="{{ route('expense.store', $colocation->id) }}">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Titre</label>
+                    <input type="text" name="title"
+                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Date</label>
+                    <input type="text" name="date"
+                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Montant</label>
+                    <input type="number" name="amount"
+                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
+                </div>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                        Annuler
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            const modal = document.getElementById('expenseModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('expenseModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
 </body>
 
 </html>

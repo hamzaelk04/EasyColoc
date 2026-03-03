@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ColocationController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::post('/user', [ColocationController::class, 'store']);
 Route::get('/colocation/{colocation}', [ColocationController::class, 'show'])
 ->middleware(['auth', 'verified'])
 ->name('colocation.show');
+
+Route::post('/colocation/{colocation}/expenses', [ExpenseController::class, 'store'])
+->name('expense.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
