@@ -17,11 +17,17 @@ Route::post('/user', [ColocationController::class, 'store']);
 
 
 Route::get('/colocation/{colocation}', [ColocationController::class, 'show'])
-->middleware(['auth', 'verified'])
-->name('colocation.show');
+    ->middleware(['auth', 'verified'])
+    ->name('colocation.show');
 
 Route::post('/colocation/{colocation}/expenses', [ExpenseController::class, 'store'])
-->name('expense.store');
+    ->name('expense.store');
+
+Route::get(
+    '/colocation/accept/{token}',
+    [ColocationController::class, 'accept']
+)->middleware('auth')
+    ->name('colocation.accept');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -33,4 +39,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

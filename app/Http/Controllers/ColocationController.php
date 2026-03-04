@@ -121,4 +121,38 @@ class ColocationController extends Controller
 
         return back()->with('success', 'Invitation sent!');
     }
+
+    public function accept($token)
+    {
+        $invitation = Invitation::where('token', $token)->firstOrFail();
+
+        if ($invitation->accepted) {
+            abort(403, 'Invitation already used.');
+        }
+
+        if ($invitation->expires_at < now()) {
+            abort(403, 'Invitation expired.');
+        }
+
+        $user = auth()->user();
+
+        if ($user->email !== $invitation->email) {
+            abort(403);
+        }
+
+        if ($user->colocation()->exists()) {
+            abort(403, 'You already belong to a colocation.');
+        }
+
+        $invitation->colocation->users()->attach($user->id, [
+            'role' => 'member'
+        ]);
+
+        $invitation->update([
+            'accepted' => true
+        ]);
+
+        return redirect()->route('colocation.index')
+            ->with('success', 'You joined successfully!');
+    }
 }
