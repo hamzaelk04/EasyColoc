@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Invitation;
 
 class RegisteredUserController extends Controller
 {
@@ -32,7 +33,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -46,6 +47,28 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        if (session()->has('invitation_token')) {
+
+            $token = session('invitation_token');
+
+            $invitation = Invitation::where('token', $token)->first();
+
+            if ($invitation && $invitation->status != 'accepted') {
+
+                $invitation->colocation->users()->attach($user->id, [
+                    'role' => 'member'
+                ]);
+
+                $invitation->update([
+                    'status' => 'accepted'
+                ]);
+
+                session()->forget('invitation_token');
+
+                return redirect()->route('colocation.show', $invitation->colocation->id);
+            }
+        }
 
         return redirect(route('user', absolute: false));
     }

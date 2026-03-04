@@ -26,8 +26,13 @@ Route::post('/colocation/{colocation}/expenses', [ExpenseController::class, 'sto
 Route::get(
     '/colocation/accept/{token}',
     [ColocationController::class, 'accept']
-)->middleware('auth')
-    ->name('colocation.accept');
+)->name('colocation.accept');
+
+Route::post('/colocation/{colocation}/invite', [ColocationController::class, 'invite'])
+    ->name('colocation.invite');
+
+Route::get('/colocation', [ColocationController::class, 'myColocation'])
+     ->name('colocation.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

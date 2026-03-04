@@ -97,29 +97,29 @@ class ColocationController extends Controller
     public function invite(Request $request, Colocation $colocation)
     {
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
-        // Only owner can invite
-        // if (!auth()->user()->isOwner()) {
-        //     abort(403);
-        // }
+        $user = auth()->user();
 
-        $token = Str::random(64);
+        // Only owner can invite
+        if ($colocation->users()->where('user_id', $user->id)->wherePivot('role', 'Owner')->doesntExist()) {
+            abort(403, 'Only the owner can invite members.');
+        }
+
+        $token = Str::random(30);
 
         $invitation = Invitation::create([
             'colocation_id' => $colocation->id,
             'email' => $request->email,
             'token' => $token,
-            'expires_at' => now()->addHours(24),
         ]);
 
         $inviteUrl = route('colocation.accept', $token);
 
-        Mail::to($request->email)
-            ->send(new ColocationInvitationMail($colocation, $inviteUrl));
+        Mail::to($request->email)->send(new ColocationInvitationMail($colocation, $inviteUrl));
 
-        return back()->with('success', 'Invitation sent!');
+        return back()->with('success', 'Invitation envoyée !');
     }
 
     public function accept($token)
@@ -130,17 +130,40 @@ class ColocationController extends Controller
             abort(403, 'Invitation already used.');
         }
 
-        if ($invitation->expires_at < now()) {
-            abort(403, 'Invitation expired.');
+        if (!auth()->check()) {
+            session(['invitation_token' => $token]);
+            return redirect()->route('register');
         }
 
+        return $this->processInvitation($invitation);
+    }
+
+    public function myColocation()
+    {
+        $user = auth()->user();
+
+        // Get the colocation of the user (assuming one colocation per user)
+        $colocation = $user->colocations()->first();
+
+        if (!$colocation) {
+            return redirect('/user')->with('info', 'Vous n’avez pas de colocation.');
+        }
+
+        $users = $colocation->users()->get();
+        $expenses = $user->expensesShared()->with('payer')->get();
+
+        return view('colocation', compact('colocation', 'users', 'expenses'));
+    }
+
+    protected function processInvitation($invitation)
+    {
         $user = auth()->user();
 
         if ($user->email !== $invitation->email) {
-            abort(403);
+            abort(403, 'This invitation is not for your email.');
         }
 
-        if ($user->colocation()->exists()) {
+        if ($user->colocations()->exists()) {
             abort(403, 'You already belong to a colocation.');
         }
 
@@ -149,10 +172,10 @@ class ColocationController extends Controller
         ]);
 
         $invitation->update([
-            'accepted' => true
+            'status' => 'accepted'
         ]);
 
-        return redirect()->route('colocation.index')
-            ->with('success', 'You joined successfully!');
+        return redirect()->route('colocation.show', $invitation->colocation->id)
+            ->with('success', 'You joined the colocation!');
     }
 }

@@ -26,7 +26,7 @@ class ColocationInvitationMail extends Mailable
     public function build()
     {
         return $this->subject('Colocation Invitation')
-                    ->view('emails.invitation');
+                    ->view('invitation');
     }
 
     /**
@@ -39,15 +39,7 @@ class ColocationInvitationMail extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
+    
 
     /**
      * Get the attachments for the message.

@@ -37,6 +37,12 @@
                 <div class="text-sm font-semibold text-gray-700"> Hello {{ auth()->user()->firstname }}</div>
             </div>
 
+            @if(session('success'))
+                <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <!-- Dépenses récentes -->
             <section class="bg-white shadow rounded p-4 mb-6">
                 <div class="flex justify-between items-center mb-4">
@@ -85,13 +91,16 @@
                 <ul class="space-y-2">
                     @foreach ($users as $user)
                         <li class="flex justify-between items-center border-b pb-2">
-                            <span> {{ $user->firstname }} <span class="text-xs text-gray-500">({{ $user->pivot->role }})</span></span>
+                            <span> {{ $user->firstname }} <span
+                                    class="text-xs text-gray-500">({{ $user->pivot->role }})</span></span>
                             <span class="text-sm text-gray-700">Balance: 0</span>
                         </li>
                     @endforeach
                 </ul>
-                <button class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600">Inviter un
-                    membre</button>
+                <button onclick="openInviteModal()"
+                    class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600">
+                    Inviter un membre
+                </button>
             </section>
         </main>
     </div>
@@ -144,6 +153,37 @@
         </div>
     </div>
 
+    <!-- Invitation Modal -->
+    <div id="inviteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <!-- Close Button -->
+            <button onclick="closeInviteModal()"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+                &times;
+            </button>
+
+            <h2 class="text-lg font-semibold mb-4">Inviter un membre</h2>
+
+            <form method="POST" action="{{ route('colocation.invite', $colocation->id) }}">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Email du membre</label>
+                    <input type="email" name="email" required
+                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                        placeholder="exemple@domaine.com">
+                </div>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeInviteModal()"
+                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuler</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        Envoyer l'invitation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         function openModal() {
             const modal = document.getElementById('expenseModal');
@@ -153,6 +193,18 @@
 
         function closeModal() {
             const modal = document.getElementById('expenseModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openInviteModal() {
+            const modal = document.getElementById('inviteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeInviteModal() {
+            const modal = document.getElementById('inviteModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
