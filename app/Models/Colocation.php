@@ -14,12 +14,17 @@ class Colocation extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)
-        ->withPivot('role')
-        ->withTimestamps();
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function expenses()
     {
         return $this->hasMany(Expense::class);
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
     }
 }
