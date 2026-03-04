@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Colocation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Invitation;
+use App\Mail\ColocationInvitationMail;
 
 class ColocationController extends Controller
 {
@@ -88,5 +92,33 @@ class ColocationController extends Controller
     public function destroy(Colocation $colocation)
     {
         //
+    }
+
+    public function invite(Request $request, Colocation $colocation)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        // Only owner can invite
+        // if (!auth()->user()->isOwner()) {
+        //     abort(403);
+        // }
+
+        $token = Str::random(64);
+
+        $invitation = Invitation::create([
+            'colocation_id' => $colocation->id,
+            'email' => $request->email,
+            'token' => $token,
+            'expires_at' => now()->addHours(24),
+        ]);
+
+        $inviteUrl = route('colocation.accept', $token);
+
+        Mail::to($request->email)
+            ->send(new ColocationInvitationMail($colocation, $inviteUrl));
+
+        return back()->with('success', 'Invitation sent!');
     }
 }
