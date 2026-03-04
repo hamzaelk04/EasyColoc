@@ -82,7 +82,21 @@
             <!-- Qui doit à qui -->
             <section class="bg-white shadow rounded p-4 mb-6">
                 <h2 class="text-lg font-semibold mb-2">Qui doit à qui ?</h2>
-                <p class="text-gray-500">Aucun remboursement en attente.</p>
+                @if(empty($transactions))
+                    <p class="text-gray-500">Aucun remboursement en attente.</p>
+                @else
+                    <ul class="space-y-2">
+                        @foreach($transactions as $transaction)
+                            <li>
+                                {{ $users->find($transaction['from'])->firstname }}
+                                doit
+                                {{ $users->find($transaction['to'])->firstname }}
+                                :
+                                {{ $transaction['amount'] }} €
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </section>
 
             <!-- Membres -->
@@ -97,10 +111,12 @@
                         </li>
                     @endforeach
                 </ul>
-                <button onclick="openInviteModal()"
-                    class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600">
-                    Inviter un membre
-                </button>
+                @if ($role === 'Owner')
+                    <button onclick="openInviteModal()"
+                        class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600">
+                        Inviter un membre
+                    </button>
+                @endif
             </section>
         </main>
     </div>
